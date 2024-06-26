@@ -1,18 +1,10 @@
 package com.flipkart.business;
 
-import com.flipkart.DAO.BookingDAO;
 import com.flipkart.bean.Booking;
 import com.flipkart.bean.Slot;
-import com.flipkart.exceptions.BookingFailedException;
-import com.flipkart.utils.UserPlan;
 
-import java.util.Date;
-import java.util.List;
+public class BookingService{
 
-
-public class BookingService implements BookingServiceInterface {
-
-    private final BookingDAO bookingDAO = new BookingDAO();
     private final ScheduleService scheduleService  = new ScheduleService();
 
     private final SlotService slotService = new SlotService();
@@ -22,42 +14,19 @@ public class BookingService implements BookingServiceInterface {
         Slot slot = slotService.getSlotByID(slotId);
         return bookingDAO.checkBookingOverlap(customerId,date,slot.getTime());
     }
-    public void addBooking(String userName, String scheduleID) {
-        try {
-            boolean isAvailable = scheduleService.modifySchedule(scheduleID,-1);
-            if(!isAvailable){
-                System.out.println("No seats available for the booking");
-                return;
-            }
-            bookingDAO.addBooking(userName, scheduleID);
-        } catch (BookingFailedException e) {
-            System.out.println(e.getMessage());
-        }
+    public void addBooking(String userId, String scheduleID) {
+        // if a place is there in the given schedule
+        System.out.println("Booking successfull");
 
     }
 
     public List<Booking> getBookingByCustomerId(String customerId){
-        try {
-            return bookingDAO.getBookingByCustomerId(customerId);
-        } catch (BookingFailedException e) {
-            System.out.println(e.getMessage());
-        }
-        return null;
-
-    }
-
-    public List<UserPlan> getCustomerPlan(String customerId){
-        return bookingDAO.getCustomerPlan(customerId);
+        //give all the bookings done by the customer with given customerID
+        System.out.println("Display all the bookings");
+        return 
     }
 
     public void cancelBooking(String bookingID) {
-        try {
-            Booking booking  = bookingDAO.getBookingByBookingId(bookingID);
-            bookingDAO.cancelBookingById(bookingID);
-            scheduleService.modifySchedule(booking.getScheduleID(),1);
-        } catch (BookingFailedException e) {
-            System.out.println(e.getMessage());
-        }
-
+        System.out.println("Booking Cancel with this booking ID");
     }
 }
